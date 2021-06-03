@@ -13,12 +13,6 @@
  */
 const Web = require('webapp');
 const bodyParser = require('middleware').bodyParser;
-const iosched = require('iosched');
-
-/* Whether the app was awakened by a shared message */
-if (ARGUMENT != undefined) {
-	console.log('Awakened by share message:', ARGUMENT);
-}
 
 /* Create app */
 const app = Web.createApp();
@@ -26,14 +20,12 @@ const app = Web.createApp();
 app.use(bodyParser.json());
 app.use(Web.static('./public', { index: ['index.html', 'index.htm'] }));
 
-app.use('/sqlite', require('./routers/sqlite'));
-app.use('/lightkv', require('./routers/lightkv'));
-app.use('/synctable', require('./routers/synctb'));
+app.use('/api/sqlite', require('./routers/sqlite'));
+app.use('/api/lightkv', require('./routers/lightkv'));
+app.use('/api/synctable', require('./routers/synctb'));
 
 // Start app.
 app.start();
 
-/*
- * Event loop
- */
-iosched.forever();
+/* Event loop */
+require('iosched').forever();

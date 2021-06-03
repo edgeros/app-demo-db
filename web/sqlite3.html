@@ -40,12 +40,12 @@
 			},
 			methods: {
 				addUser: function () {
-					const auth = {
+					let auth = {
 						'edger-token': this.token,
 						'edger-srand': this.srand
 					};
 					axios
-						.post('/sqlite/add', { name: this.name, age: this.age }, { headers: auth })
+						.post('/api/sqlite/add', { name: this.name, age: this.age }, { headers: auth })
 						.then(res => {
 							this.getUsers();
 						})
@@ -54,12 +54,12 @@
 						});
 				},
 				getUsers: function () {
-					const auth = {
+					let auth = {
 						'edger-token': this.token,
 						'edger-srand': this.srand
 					};
 					axios
-						.get('/sqlite/list', {}, { headers: auth })
+						.get('/api/sqlite/list', { headers: auth })
 						.then(res => {
 							this.users = res.data;
 						})

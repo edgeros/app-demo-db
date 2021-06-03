@@ -28,12 +28,12 @@
 			},
 			methods: {
 				onAccess: function () {
-					const auth = {
+					let auth = {
 						'edger-token': this.token,
 						'edger-srand': this.srand
 					};
 					axios
-						.get('/lightkv/access', {}, { headers: auth })
+						.get('/api/lightkv/access', { headers: auth })
 						.then(res => {
 							this.count = res.data.count;
 						})
@@ -45,6 +45,7 @@
 					edger.token().then((res) => {
 						this.token = res.token;
 						this.srand = res.srand;
+						this.onAccess();
 					}).catch((error) => {
 						// ...
 					});
@@ -57,9 +58,6 @@
 			},
 			created: function () {
 				this.initAuth();
-			},
-			mounted() {
-				this.onAccess();
 			}
 		});
 	</script>
