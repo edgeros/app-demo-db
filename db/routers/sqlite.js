@@ -16,24 +16,19 @@ const router = Router.create();
 
 /*
  * create db.
- */ 
+ */
 var db = Sqlite3.open(':memory:');
 db.run('CREATE TABLE user(name text, age int);');
 
 /*
  * res: [{name, age}]
  */
-router.get('/list', function(req, res) {
+router.get('/list', function (req, res) {
 	console.log('Get users.');
 	var data = [];
-	var stmt = db.prepare('SELECT * FROM user;');
-	do {
-		var ret = stmt.step((row) => {
-			data.push({name: row.name, age: row.age});
-		});
-	} while (ret === Sqlite3.ROW);
-	stmt.finalize();
-
+	db.run('SELECT * FROM user;', (row) => {
+		data.push(row);
+	});
 	res.json(data);
 });
 
@@ -41,11 +36,11 @@ router.get('/list', function(req, res) {
  * req: {name, age}
  * ret: {ret}
  */
-router.post('/add', function(req, res) {
+router.post('/add', function (req, res) {
 	console.log('Add user.');
 	var user = req.body;
 	db.run('INSERT INTO user VALUES(?, ?);', user.name, user.age);
-	res.json({ret: true});
+	res.json({ ret: true });
 });
 
 module.exports = router;
